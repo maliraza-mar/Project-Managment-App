@@ -22,7 +22,7 @@ class ProjectProgressContainers extends StatelessWidget {
       ),
       padding: EdgeInsets.symmetric(
         vertical: sizes.height30,        //top = 26
-        horizontal: sizes.width50
+        horizontal: sizes.width118
       ),
       decoration: BoxDecoration(
         color: const Color(0xff07aeaf),

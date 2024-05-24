@@ -190,6 +190,7 @@ class Sizes {
   double get width75 => size.width / 4.8;
   double get width100 => size.width / 3.6;
   double get width106 => size.width / 3.396;
+  double get width118 => size.width / 3;                  //width = 124.1
   double get width124 => size.width / 2.9;                  //width = 124.1
   double get width134 => size.width / 2.686;                  //width = 124.1
   double get width144 => size.width / 2.5;                  //width = 144

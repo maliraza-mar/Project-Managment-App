@@ -11,8 +11,6 @@ class EmployeeController extends GetxController {
   UserModel? loggedInEmployee;
 
   RxInt totalProjectsCount = 0.obs;
-  RxInt pendingProjectsCount = 0.obs;
-  RxInt missedProjectsCount = 0.obs;
   RxInt completedProjectsCount = 0.obs;
 
   @override
@@ -59,14 +57,6 @@ class EmployeeController extends GetxController {
           total += (num.tryParse(doc['Total Projects'].toString()) ?? 0).toDouble().toInt();
         }
 
-        if (doc.data().containsKey('Pending Projects')) {
-          pending += (num.tryParse(doc['Pending Projects'].toString()) ?? 0).toDouble().toInt();
-        }
-
-        if (doc.data().containsKey('Missed Projects')) {
-          missed += (num.tryParse(doc['Missed Projects'].toString()) ?? 0).toDouble().toInt();
-        }
-
         if (doc.data().containsKey('Completed Projects')) {
           completed += (num.tryParse(doc['Completed Projects'].toString()) ?? 0).toDouble().toInt();
         }
@@ -76,8 +66,6 @@ class EmployeeController extends GetxController {
 
       // Update the project counts
       totalProjectsCount.value = total;
-      pendingProjectsCount.value = pending;
-      missedProjectsCount.value = missed;
       completedProjectsCount.value = completed;
     } catch (e) {
         if (kDebugMode) {
@@ -85,8 +73,6 @@ class EmployeeController extends GetxController {
         }
       // Set counts to 0 on error
       totalProjectsCount.value = 0;
-      pendingProjectsCount.value = 0;
-      missedProjectsCount.value = 0;
       completedProjectsCount.value = 0;
     }
   }

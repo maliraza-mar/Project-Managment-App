@@ -68,27 +68,21 @@ class _HomeState extends State<Home> {
                   fontWeight: FontWeight.bold,
                   fontSize: sizes.responsiveFontSize17,
                 ),),),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [ //Todo, Pending
-                Obx(() => ProjectProgressContainers(
-                  figureText: employeeController.totalProjectsCount.toInt(),
-                  wordText: 'To Do',
-                ),),
-                Obx(() => ProjectProgressContainers(
-                  figureText: employeeController.pendingProjectsCount.toInt(),
-                  wordText: 'Pending',
-                ),),],),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [ ///Missed, Completed
-                Obx(() => ProjectProgressContainers(
-                  figureText: employeeController.missedProjectsCount.toInt(),
-                  wordText: 'Missed',
-                ),),
-                Obx(() => ProjectProgressContainers(
-                  figureText: employeeController.completedProjectsCount.toInt(),
-                  wordText: 'Completed',
-                ),),],),
+
+            Obx(() => Padding(
+              padding: EdgeInsets.symmetric(horizontal: sizes.width24),
+              child: ProjectProgressContainers(
+                figureText: employeeController.totalProjectsCount.toInt(),
+                wordText: 'To Do Task',
+              ),
+            ),),
+            Obx(() => Padding(
+              padding: EdgeInsets.symmetric(horizontal: sizes.width24),
+              child: ProjectProgressContainers(
+                figureText: employeeController.completedProjectsCount.toInt(),
+                wordText: 'Completed',
+              ),
+            ),),
 
           ],
         ),
