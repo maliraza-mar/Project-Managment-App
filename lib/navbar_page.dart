@@ -17,7 +17,15 @@ class NavBarPage extends StatefulWidget {
 }
 
 class _NavBarPageState extends State<NavBarPage> {
-  final NavBarPageController controller = Get.put(NavBarPageController());
+  late final NavBarPageController controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Initialize the controller here to ensure a fresh instance
+    controller = Get.put(NavBarPageController());
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,22 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_app/resources/auth_method.dart';
-import 'package:project_app/widgets/userside_home_container.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_pages/profile.dart';
 import '../app_pages/employee_designation.dart';
-import '../app_pages/reports.dart';
-import '../app_pages/reset_password.dart';
 import '../app_pages/sign_in.dart';
 import '../app_pages/splash_screen.dart';
 import '../common/sizes.dart';
 import '../controllers/employee_controller.dart';
-import '../employees_chat_list.dart';
+import '../controllers/navbar_page_controller.dart';
 import '../model/user_model.dart';
-import '../utilities/utils.dart';
 import '../widgets/my_card.dart';
 
 class Admin extends StatefulWidget {
@@ -28,7 +22,6 @@ class Admin extends StatefulWidget {
 }
 
 class _AdminState extends State<Admin> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final AuthMethod _authMethod = AuthMethod();
   String currentUserImage = '';
   String? currentUserName;
@@ -72,7 +65,7 @@ class _AdminState extends State<Admin> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: sizes.height37, right: sizes.width5),
+            padding: EdgeInsets.only(top: sizes.height55, right: sizes.width5),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(sizes.responsiveBorderRadius66),
@@ -90,7 +83,7 @@ class _AdminState extends State<Admin> {
                 fontSize: sizes.responsiveFontSize20,
                 fontWeight: FontWeight.bold,
               ),),),
-          SizedBox(height: sizes.height65,),
+          SizedBox(height: sizes.height70,),
           MyCard(
             title: 'Profile', onTap: () {
               try {
@@ -120,15 +113,11 @@ class _AdminState extends State<Admin> {
             leading: const Icon(Icons.people_outline_outlined),
           ),
 
-          //Reports card
+          //Logout card
           MyCard(
-            title: 'Reports', onTap: () {
-            Get.to( () => const Reports());
-          },
+            title: 'Logout', onTap: () => logout(),
             leading: const Icon(Icons.event_note_outlined),
           ),
-
-          //Reset Password card
 
         ],
       ),
@@ -144,7 +133,9 @@ class _AdminState extends State<Admin> {
         });
       }
     } catch (e) {
-      print('Error fetching image: $e');
+      if (kDebugMode) {
+        print('Error fetching image: $e');
+      }
       // Handle error
     }
   }
@@ -158,7 +149,9 @@ class _AdminState extends State<Admin> {
         });
       }
     } catch (e) {
-      print('Error fetching username: $e');
+      if (kDebugMode) {
+        print('Error fetching username: $e');
+      }
       // Handle error
     }
   }
@@ -168,6 +161,11 @@ class _AdminState extends State<Admin> {
   void logout () async {
     var sharedPreference = await SharedPreferences.getInstance();
     sharedPreference.setBool(SplashScreenState.keyLogin, false);
+
+    // Reset the NavBarPageController
+    NavBarPageController controller = Get.find();
+    controller.reset();
+    Get.delete<NavBarPageController>();
 
     Get.to( () => const SignIn());
   }

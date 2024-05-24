@@ -1,26 +1,22 @@
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 class NavBarPageController extends GetxController {
+  RxInt currentPage = 0.obs;
   late PageController pageController;
 
-  //Variable for changing index of Bottom AppBar
-  RxInt currentPage = 0.obs;
+  NavBarPageController() {
+    pageController = PageController();
+  }
 
-  void goToTab (int page) {
+  void goToTab(int page) {
     currentPage.value = page;
     pageController.jumpToPage(page);
   }
 
-  @override
-  void onInit() {
-    pageController = PageController(initialPage: 0);
-    super.onInit();
-  }
-  @override
-  void onClose() {
+  void reset() {
+    currentPage.value = 0;
     pageController.dispose();
-    super.onClose();
+    pageController = PageController();
   }
-
 }
