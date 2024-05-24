@@ -18,8 +18,6 @@ class _ProjectsNavBarPagesState extends State<ProjectsNavBarPages> {
 
   List<Widget> screens = [
     AllProjects(),
-    const PendingProjects(),
-    const RevisionProjects(),
     const CompletedProjects(),
     const ProjectsDetails(),
   ];
@@ -31,7 +29,7 @@ class _ProjectsNavBarPagesState extends State<ProjectsNavBarPages> {
     final sizes = Sizes(context);
 
     return DefaultTabController(
-      length: 4,
+      length: 2,
       child: Scaffold(                       //for wraping with new Widget Do this => (alt + enter)
         appBar: AppBar(
             backgroundColor: Colors.grey.shade100,
@@ -55,23 +53,12 @@ class _ProjectsNavBarPagesState extends State<ProjectsNavBarPages> {
                 indicatorColor: const Color(0xff07aeaf),
                 splashFactory: NoSplash.splashFactory,
                 unselectedLabelColor: Colors.grey.shade400,
+                overlayColor: MaterialStateProperty.all(Colors.transparent),
                 tabs: [
                   Tab(
                     iconMargin: EdgeInsets.only(bottom: sizes.height3),
                     icon: const Icon(Icons.home_outlined),
                     text: 'Home',
-                  ),
-
-                  Tab(
-                    iconMargin: EdgeInsets.only(bottom: sizes.height3),
-                    icon: const Icon(Icons.pending_actions_outlined),
-                    text: 'Pending',
-                  ),
-
-                  Tab(
-                    iconMargin: EdgeInsets.only(bottom: sizes.height3),
-                    icon: const Icon(Icons.refresh),
-                    text: 'Revisions',
                   ),
 
                   Tab(
@@ -86,10 +73,6 @@ class _ProjectsNavBarPagesState extends State<ProjectsNavBarPages> {
         body: TabBarView(
             children: [
               AllProjects(),
-
-              PendingProjects(),
-
-              RevisionProjects(),
 
               CompletedProjects(),
         ]),

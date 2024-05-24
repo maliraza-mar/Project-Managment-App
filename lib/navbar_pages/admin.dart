@@ -46,19 +46,6 @@ class _AdminState extends State<Admin> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
-        actions: [
-          IconButton(
-              padding: EdgeInsets.only(right: sizes.width5, top: sizes.height10),
-              onPressed: (){
-                logout();
-              },
-              icon: Icon(
-                Icons.logout_outlined,
-                color: const Color(0xff07aeaf),
-                size: sizes.responsiveIconSize30,
-              )
-          )
-        ],
         automaticallyImplyLeading: false,
         elevation: 0,
       ),

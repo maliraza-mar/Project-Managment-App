@@ -45,7 +45,7 @@ class UsersideCompMissTodoContainer extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -73,30 +73,6 @@ class UsersideCompMissTodoContainer extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: sizes.width15, vertical: sizes.height15),
-                  child: Column(
-                    children: [
-                      Text(
-                        '02',
-                        style: TextStyle(
-                          color: numbersColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: sizes.responsiveFontSize23,
-                        ),
-                      ),
-                      Text('Missed', style: TextStyle(color: textColor)),
-                    ],
-                  ),
-                ),
-                Text(
-                  '|',
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: sizes.responsiveFontSize50,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
                       horizontal: sizes.width24, vertical: sizes.height15),
                   child: toDo,
                 )
@@ -107,7 +83,7 @@ class UsersideCompMissTodoContainer extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: sizes.height20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -124,36 +100,6 @@ class UsersideCompMissTodoContainer extends StatelessWidget {
                         ),
                         Text(
                           'Completed',
-                          style: TextStyle(
-                            color: textColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Text(
-                    '|',
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: sizes.responsiveFontSize50,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: sizes.width15, vertical: sizes.height15),
-                    child: Column(
-                      children: [
-                        Text(
-                          '02',
-                          style: TextStyle(
-                            color: numbersColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: sizes.responsiveFontSize23,
-                          ),
-                        ),
-                        Text(
-                          'Missed',
                           style: TextStyle(
                             color: textColor,
                             fontWeight: FontWeight.bold,
