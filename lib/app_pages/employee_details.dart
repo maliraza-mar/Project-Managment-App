@@ -300,7 +300,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
 
   Future<void> _updateTotalProjectsAndPrintCount() async {
     try {
-      await employeeTotalProjects.updateTotalProjects(widget.user.fullName);
+      await employeeTotalProjects.updateTotalProjects(widget.user.fullName,);
     } catch (e) {
       if (kDebugMode) {
         print('Error updating total projects: $e');
@@ -345,7 +345,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
   Future<Map<String, dynamic>> fetchEmployeeDetails(String employeeName) async {
     try {
       CollectionReference projectCollection =
-          FirebaseFirestore.instance.collection('Users');
+          FirebaseFirestore.instance.collection('Employee');
       final snapShot = await projectCollection
           .where('Full Name', isEqualTo: employeeName)
           .get();

@@ -108,7 +108,9 @@ class _ProjectsState extends State<Projects> {
                               } else {
                                 // Data has been successfully fetched
                                 final employeeDetails = snapshot.data!;
-                                print('Employee Details are: $employeeDetails');
+                                if (kDebugMode) {
+                                  print('Employee Details are: $employeeDetails');
+                                }
                                 return MyProjectsInProgress(
                                   title: projectTitle,
                                   titleId: projectId,
@@ -310,9 +312,8 @@ class _ProjectsState extends State<Projects> {
   Future<Map<String, dynamic>> fetchEmployeeDetails(String employeeName) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Users')
+          .collection('Employee')
           .where('Full Name', isEqualTo: employeeName)
-          .where('Role', isEqualTo: 'Employee')
           .get();
 
       // Fetching the details of the employee

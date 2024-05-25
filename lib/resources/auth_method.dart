@@ -56,7 +56,9 @@ class AuthMethod{
             joiningDate: joiningDate,
           );
 
-          await _firestore.collection('Users').doc(uniqueDocumentName).set(user.toJson());
+          //await _firestore.collection('Users').doc(uniqueDocumentName).set(user.toJson());
+          String collectionName = role == 'Admin' ? 'Admin' : 'Employee';
+          await _firestore.collection(collectionName).doc(cred.user!.uid).set(user.toJson());
 
           res = 'success';
         }
@@ -72,7 +74,7 @@ class AuthMethod{
   Future<int> getEmployeeCount(String role) async {
     try {
       QuerySnapshot querySnapshot =
-      await _firestore.collection('Users').where('Role', isEqualTo: role).get();
+      await _firestore.collection(role).get();
 
       return querySnapshot.size;
     } catch (e) {
@@ -86,7 +88,7 @@ class AuthMethod{
 
     try {
       QuerySnapshot querySnapshot =
-      await _firestore.collection('Users').get();
+      await _firestore.collection('Admin').get();
 
       admin = querySnapshot.docs
           .map((doc) {
@@ -97,9 +99,7 @@ class AuthMethod{
           email: data['Email'] ?? '',
           role: data['Role'] ?? '',
         );
-      })
-          .where((user) => user.role == 'Admin')
-          .toList();
+      }).toList();
     } catch (e) {
       print("Error fetching employees: $e");
     }
@@ -113,7 +113,7 @@ class AuthMethod{
 
     try {
       QuerySnapshot querySnapshot =
-      await _firestore.collection('Users').get();
+      await _firestore.collection('Employee').get();
 
       employees = querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -123,7 +123,7 @@ class AuthMethod{
           email: data['Email'] ?? '',
           role: data['Role'] ?? '',
         );
-      }).where((user) => user.role != 'Admin').toList();
+      }).toList();
     } catch (e) {
       print("Error fetching employees: $e");
     }

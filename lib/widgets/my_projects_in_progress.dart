@@ -38,11 +38,12 @@ class _MyProjectsInProgressState extends State<MyProjectsInProgress> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // for generating unique id for two different users
-  String generateRoomId(String user1, String user2, String projectId) {
+  String generateRoomId(String user1, String user2, String projectId,) {
     // Sort the user IDs or email addresses to ensure consistency
     List<String> sortedUsers = [user1, user2]..sort();
     return '${sortedUsers[0]}_${sortedUsers[1]}_$projectId';
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +136,7 @@ class _MyProjectsInProgressState extends State<MyProjectsInProgress> {
     );
   }
 
-  Widget _twoButton(BuildContext context, {required button, required label, required String projectId}) {
+  Widget _twoButton(BuildContext context, {required button, required label, required String projectId,}) {
     return InkWell(
       onTap: () {
         if (kDebugMode) {

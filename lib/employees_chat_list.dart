@@ -28,25 +28,25 @@ class _EmployeesChatListState extends State<EmployeesChatList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _combinedStream = _combineStreams(
-    //   _firestore.collection('Admin').snapshots(),
-    //   _firestore.collection('Employee').snapshots(),
-    // );
+    _combinedStream = _combineStreams(
+      _firestore.collection('Admin').snapshots(),
+      _firestore.collection('Employee').snapshots(),
+    );
   }
 
   //Displayed both Admin and Employees in the same ChatList
-  // Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> _combineStreams(
-  //     Stream<QuerySnapshot<Map<String, dynamic>>> stream1,
-  //     Stream<QuerySnapshot<Map<String, dynamic>>> stream2,
-  //     ) {
-  //   return StreamZip([stream1, stream2]).map((combinedData) {
-  //     final List<QueryDocumentSnapshot<Map<String, dynamic>>> list1 =
-  //     combinedData[0].docs.map((doc) => doc as QueryDocumentSnapshot<Map<String, dynamic>>).toList();
-  //     final List<QueryDocumentSnapshot<Map<String, dynamic>>> list2 =
-  //     combinedData[1].docs.map((doc) => doc as QueryDocumentSnapshot<Map<String, dynamic>>).toList();
-  //     return [...list1, ...list2];
-  //   });
-  // }
+  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> _combineStreams(
+      Stream<QuerySnapshot<Map<String, dynamic>>> stream1,
+      Stream<QuerySnapshot<Map<String, dynamic>>> stream2,
+      ) {
+    return StreamZip([stream1, stream2]).map((combinedData) {
+      final List<QueryDocumentSnapshot<Map<String, dynamic>>> list1 =
+      combinedData[0].docs.map((doc) => doc as QueryDocumentSnapshot<Map<String, dynamic>>).toList();
+      final List<QueryDocumentSnapshot<Map<String, dynamic>>> list2 =
+      combinedData[1].docs.map((doc) => doc as QueryDocumentSnapshot<Map<String, dynamic>>).toList();
+      return [...list1, ...list2];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +74,7 @@ class _EmployeesChatListState extends State<EmployeesChatList> {
             children: [
               Expanded(
                 child: StreamBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
-                    stream: _firestore.collection('Users').snapshots().map(
-                          (snapshot) => snapshot.docs.toList(),
-                    ),
+                    stream: _combinedStream,
                     builder: (context, AsyncSnapshot<List<QueryDocumentSnapshot<Map<String, dynamic>>>> snapshot) {
                       if(snapshot.connectionState == ConnectionState.waiting) {
                         return const Text('Loading') ;
@@ -148,3 +146,5 @@ class _EmployeesChatListState extends State<EmployeesChatList> {
   }
 
 }
+
+//_firestore.collection('Users').snapshots().map((snapshot) => snapshot.docs.toList(),)

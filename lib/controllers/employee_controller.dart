@@ -42,33 +42,38 @@ class EmployeeController extends GetxController {
 
   Future<void> fetchTotalProjectsCount() async {
     try {
-      CollectionReference<Map<String, dynamic>> projectCollection = FirebaseFirestore.instance.collection('Users');
-      QuerySnapshot<Map<String, dynamic>> snapshot = await projectCollection.get();
+      CollectionReference<Map<String, dynamic>> projectCollection =
+      FirebaseFirestore.instance.collection('Employee');
 
+      // Initialize the total and completed counts
       int total = 0;
       int completed = 0;
 
-      // Iterate through each document in the collection
-      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
-        // Check if the 'Total Projects' field exists in the document
-        if (doc.data().containsKey('Total Projects')) {
-          total += (num.tryParse(doc['Total Projects'].toString()) ?? 0).toDouble().toInt();
+      // Set up a snapshot listener on the collection
+      projectCollection.snapshots().listen((snapshot) {
+        total = 0;
+        completed = 0;
+
+        // Iterate through each document in the collection
+        for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
+          // Check if the 'Total Projects' field exists in the document
+          if (doc.data().containsKey('Total Projects')) {
+            total += (num.tryParse(doc['Total Projects'].toString()) ?? 0).toDouble().toInt();
+          }
+
+          if (doc.data().containsKey('Completed Projects')) {
+            completed += (num.tryParse(doc['Completed Projects'].toString()) ?? 0).toDouble().toInt();
+          }
         }
 
-        if (doc.data().containsKey('Completed Projects')) {
-          completed += (num.tryParse(doc['Completed Projects'].toString()) ?? 0).toDouble().toInt();
-        }
-      }
-
-
-
-      // Update the project counts
-      totalProjectsCount.value = total;
-      completedProjectsCount.value = completed;
+        // Update the project counts
+        totalProjectsCount.value = total;
+        completedProjectsCount.value = completed;
+      });
     } catch (e) {
-        if (kDebugMode) {
-          print('Error fetching project counts: $e');
-        }
+      if (kDebugMode) {
+        print('Error fetching project counts: $e');
+      }
       // Set counts to 0 on error
       totalProjectsCount.value = 0;
       completedProjectsCount.value = 0;
@@ -79,7 +84,7 @@ class EmployeeController extends GetxController {
   Future<String?> getEmployeeIdByEmail(String email) async {
     try {
       var querySnapshot = await FirebaseFirestore.instance
-          .collection('Users')
+          .collection('Employee')
           .where('Email', isEqualTo: email)
           .get();
 
@@ -98,7 +103,7 @@ class EmployeeController extends GetxController {
       String? documentId = await getEmployeeIdByEmail(email);
       if (documentId != null) {
         await FirebaseFirestore.instance
-            .collection('Users')
+            .collection('Employee')
             .doc(documentId)
             .update({'Role': newDesignation});
         // Optionally update the local list of users if needed
