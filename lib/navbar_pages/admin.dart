@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_app/app_pages/progress.dart';
 import 'package:project_app/resources/auth_method.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_pages/profile.dart';
@@ -47,6 +48,13 @@ class _AdminState extends State<Admin> {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () => logout(),
+            icon: const Icon(Icons.logout, color: Color(0xff07aeaf),),
+            padding: EdgeInsets.only(right: sizes.width8),
+          ),
+        ],
         elevation: 0,
       ),
       body: Column(
@@ -100,9 +108,11 @@ class _AdminState extends State<Admin> {
             leading: const Icon(Icons.people_outline_outlined),
           ),
 
-          //Logout card
+          //Progress card
           MyCard(
-            title: 'Logout', onTap: () => logout(),
+            title: 'Progress', onTap: () {
+              Get.to( () => Progress());
+            },
             leading: const Icon(Icons.event_note_outlined),
           ),
 
@@ -143,8 +153,6 @@ class _AdminState extends State<Admin> {
     }
   }
 
-
-  //Logout krny k liy Function
   void logout () async {
     var sharedPreference = await SharedPreferences.getInstance();
     sharedPreference.setBool(SplashScreenState.keyLogin, false);
