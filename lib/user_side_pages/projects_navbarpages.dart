@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/user_side_pages/projects_navbar_pages/all_projects.dart';
 import 'package:project_app/user_side_pages/projects_navbar_pages/completed_projects.dart';
-import 'package:project_app/user_side_pages/projects_navbar_pages/pending_projects.dart';
 import 'package:project_app/user_side_pages/projects_navbar_pages/projects_details.dart';
-import 'package:project_app/user_side_pages/projects_navbar_pages/revisions_projects.dart';
 
 import '../common/sizes.dart';
 
