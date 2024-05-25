@@ -15,8 +15,10 @@ class EmployeeTotalProjects{
       // Increment the totalProjects count
       int updatedTotalProjects = currentTotalProjects + 1;
 
-      // Update the employee document
-      await employeeRef.update({'Total Projects': updatedTotalProjects});
+      // Update the totalProjects count using FieldValue.increment
+      await employeeRef.update({
+        'Total Projects': FieldValue.increment(1)
+      });
 
       print('Total projects updated successfully for employee $employeeUid');
     } catch (e) {

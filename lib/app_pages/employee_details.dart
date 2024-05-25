@@ -88,9 +88,6 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                           NetworkImage(widget.user.imageUrl.toString())),
                   title: Text(widget.user.fullName.toString(),
                       style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(widget.user.contactNumber.toString(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                           sizes.responsiveBorderRadius10)),

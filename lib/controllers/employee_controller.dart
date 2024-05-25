@@ -46,8 +46,6 @@ class EmployeeController extends GetxController {
       QuerySnapshot<Map<String, dynamic>> snapshot = await projectCollection.get();
 
       int total = 0;
-      int pending = 0;
-      int missed = 0;
       int completed = 0;
 
       // Iterate through each document in the collection

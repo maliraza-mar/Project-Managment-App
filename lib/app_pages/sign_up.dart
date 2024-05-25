@@ -68,10 +68,13 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       Column(
                         children: [
-                          Center(child: Text('Logo', style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: sizes.responsiveFontSize34,
-                              ),),),
+                          Center(child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: sizes.height26),
+                            child: Text('Logo', style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: sizes.responsiveFontSize40,
+                                ),),
+                          ),),
                           Form(key: _formKey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,12 +94,6 @@ class _SignUpState extends State<SignUp> {
                                         ? '${selectedImageName!.substring(0, 10)}...'
                                         : selectedImageName!)
                                       : 'Image name',
-                                ),
-                                const MyText(text: 'Contact Number'),
-                                MyTextFormField(
-                                  controller: contactNumberController,
-                                  hintText: '03001234567',
-                                  keyboardType: TextInputType.number,
                                 ),
                                 const MyText(text: 'Email'),
                                 MyTextFormField(
@@ -120,7 +117,7 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ],),),],
                       ),
-                      SizedBox(height: sizes.height48,),
+                      SizedBox(height: sizes.height90,),
                       RoundButton(
                           title: 'Sign Up',
                           loading: loading,
@@ -182,7 +179,6 @@ class _SignUpState extends State<SignUp> {
         fullName: fullNameController.text,
         email: emailController.text,
         password: passwordController.text,
-        contactNumber: contactNumberController.text,
         file: _image!,
         role: role,
       );

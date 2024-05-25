@@ -25,14 +25,13 @@ class AuthMethod{
     required String fullName,
     required String email,
     required String password,
-    required String contactNumber,
     required Uint8List file,
     required String role,
   }) async {
     String res = 'Some error occurred';
 
     try {
-      if (fullName.isNotEmpty && email.isNotEmpty && password.isNotEmpty && contactNumber.isNotEmpty &&
+      if (fullName.isNotEmpty && email.isNotEmpty && password.isNotEmpty &&
           file != null && role.isNotEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
@@ -50,7 +49,6 @@ class AuthMethod{
           UserModel user = UserModel(
             fullName: fullName,
             imageUrl: photoUrl,
-            contactNumber: contactNumber,
             email: email,
             password: password,
             uid: cred.user!.uid,
@@ -96,7 +94,6 @@ class AuthMethod{
         return UserModel(
           fullName: data['Full Name'] ?? '',
           imageUrl: data['User Image'] ?? '',
-          contactNumber: data['Contact Number'] ?? '',
           email: data['Email'] ?? '',
           role: data['Role'] ?? '',
         );
@@ -123,7 +120,6 @@ class AuthMethod{
         return UserModel(
           fullName: data['Full Name'] ?? '',
           imageUrl: data['User Image'] ?? '',
-          contactNumber: data['Contact Number'] ?? '',
           email: data['Email'] ?? '',
           role: data['Role'] ?? '',
         );
