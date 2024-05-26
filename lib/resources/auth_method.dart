@@ -45,6 +45,7 @@ class AuthMethod{
           String uniqueDocumentName = '$role${employeeCount + 1}';
           // Create a DateTime object for the current date and time
           Timestamp joiningDate = Timestamp.now();
+          Timestamp date = Timestamp.now();
 
           UserModel user = UserModel(
             fullName: fullName,
@@ -53,6 +54,7 @@ class AuthMethod{
             password: password,
             uid: cred.user!.uid,
             role: role,
+            compProjDate: date,
             joiningDate: joiningDate,
           );
 

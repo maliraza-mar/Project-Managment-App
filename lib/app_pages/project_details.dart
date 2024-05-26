@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -269,7 +270,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
       // Update project status
       await FirebaseFirestore.instance.collection('Projects').doc(projectId).update({
         'status': isCompleted ? 'Completed' : 'In Progress',
-        'completedDate': isCompleted ? Timestamp.now() : null,
+        //'completedDate': isCompleted ? Timestamp.now() : null,
       });
 
       // Query the Employee collection to get the document for the given employee's name
@@ -291,9 +292,12 @@ class _ProjectDetailsState extends State<ProjectDetails> {
         await FirebaseFirestore.instance.collection('Employee').doc(employeeUid).update({
           'Completed Projects': isCompleted ? completedProjects + 1 : completedProjects - 1,
           'Total Projects': isCompleted ? totalProjects - 1 : totalProjects + 1, // Decrease the total projects count
+          'ComPro Date': isCompleted ? Timestamp.now() : null,
         });
       } else {
-        print('Employee document does not exist.');
+        if (kDebugMode) {
+          print('Employee document does not exist.');
+        }
       }
 
       // Notify parent widget about the change

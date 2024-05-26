@@ -6,9 +6,8 @@ import 'package:get/get.dart';
 import '../controllers/employee_controller.dart';
 import '../widgets/my_app_bar.dart';
 
-
 class ProgressScreen extends StatelessWidget {
-  const ProgressScreen({super.key});
+  const ProgressScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,55 +28,60 @@ class ProgressScreen extends StatelessWidget {
         ),
         title: 'Progress',
       ),
-      body: Obx(() {
-        if (employeeController.projectProgress.isEmpty) {
-          return const Center(
-            child: Text('No data available'),
-          );
-        }
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: sizes.height220),
+        child: Obx(() {
+          if (employeeController.projectProgress.isEmpty) {
+            return const Center(
+              child: Text('No data available'),
+            );
+          }
+          print('Project Progress Data: ${employeeController.projectProgress}');
 
-        List<FlSpot> spots = employeeController.projectProgress.map((data) {
-          DateTime date = data['date'];
-          double x = date.day.toDouble() + (date.month - 1) * 30; // Simplified conversion
-          double y = data['Completed Projects'].toDouble();
-          return FlSpot(x, y);
-        }).toList();
+          List<FlSpot> spots = employeeController.projectProgress.map((data) {
+            DateTime date = data['ComPro Date'];
+            double x = date.difference(DateTime(2024)).inDays.toDouble(); // Use days since a reference date
+            double y = data['Completed Projects'].toDouble();
+            return FlSpot(x, y);
+          }).toList();
 
-        return LineChart(
-          LineChartData(
-            gridData: FlGridData(show: true),
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(showTitles: true),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  getTitlesWidget: (value, meta) {
-                    DateTime date = DateTime(2023, 1, 2); // Simplified conversion
-                    //DateTime date = DateTime(2023, (value ~/ 30) + 1, (value % 30) as int); // Simplified conversion
-                    return SideTitleWidget(
-                      axisSide: meta.axisSide,
-                      space: 4,
-                      child: Text(DateFormat('d MMM').format(date)),
-                    );
-                  },
+          return LineChart(
+            LineChartData(
+              gridData: const FlGridData(show: true),
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: true, getTitlesWidget: (value, meta) {
+                    return Text(value.toInt().toString());
+                  }),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: (value, meta) {
+                      DateTime date = DateTime(2024).add(Duration(days: value.toInt())); // Convert days back to date
+                      return SideTitleWidget(
+                        axisSide: meta.axisSide,
+                        space: 4,
+                        child: Text(DateFormat('d MMM').format(date)),
+                      );
+                    },
+                  ),
                 ),
               ),
+              borderData: FlBorderData(show: true),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: spots,
+                  isCurved: true,
+                  color: Colors.blue,
+                  barWidth: 4,
+                  belowBarData: BarAreaData(show: true, color: Colors.blue.withOpacity(0.3)),
+                ),
+              ],
             ),
-            borderData: FlBorderData(show: true),
-            lineBarsData: [
-              LineChartBarData(
-                spots: spots,
-                isCurved: true,
-                color: Colors.blue,
-                barWidth: 4,
-                belowBarData: BarAreaData(show: true, color: Colors.blue.withOpacity(0.3)),
-              ),
-            ],
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

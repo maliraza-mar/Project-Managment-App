@@ -21,6 +21,7 @@ class EmployeeController extends GetxController {
     super.onInit();
     fetchEmployees();
     fetchTotalProjectsCount();
+    fetchProjectProgress();
   }
 
   void fetchEmployees() async {
@@ -122,22 +123,35 @@ class EmployeeController extends GetxController {
 
   Future<void> fetchProjectProgress() async {
     try {
-      CollectionReference<Map<String, dynamic>> projectCollection = FirebaseFirestore.instance.collection('Employee');
-      QuerySnapshot<Map<String, dynamic>> snapshot = await projectCollection.get();
+      CollectionReference<Map<String, dynamic>> employeeCollection = FirebaseFirestore.instance.collection('Employee');
+      QuerySnapshot<Map<String, dynamic>> snapshot = await employeeCollection.get();
+
+      print('Snapshot length: ${snapshot.size}'); // Debug print
 
       List<Map<String, dynamic>> progressData = [];
 
       for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
-        if (doc.data().containsKey('date') && doc.data().containsKey('completedProjects')) {
+        print('Document data: ${doc.data()}'); // Debug print
+        if (doc.data().containsKey('ComPro Date') && doc.data().containsKey('Completed Projects')) {
+          var comProDate = doc['ComPro Date'];
+          var completedProjects = doc['Completed Projects'];
+          print('ComPro Date: $comProDate, Completed Projects: $completedProjects'); // Debug print
+
           progressData.add({
-            'date': (doc['date'] as Timestamp).toDate(),
-            'completedProjects': (doc['completedProjects'] ?? 0) as int,
+            'ComPro Date': (comProDate as Timestamp).toDate(),
+            'Completed Projects': (completedProjects ?? 0) as int,
           });
         }
       }
 
+      print('Progress data length: ${progressData.length}'); // Debug print
+
       projectProgress.assignAll(progressData);
+      if (kDebugMode) {
+        print('Progress Data is: $progressData');
+      }
     } catch (e) {
+      print('Error fetching project progress: $e'); // Debug print
       projectProgress.assignAll([]);
     }
   }

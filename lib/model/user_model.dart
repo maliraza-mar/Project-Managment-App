@@ -11,6 +11,7 @@ class UserModel {
   String? role;
   final int? totalProjects;
   final int? completedProjects;
+  final Timestamp? compProjDate;
   final Timestamp? joiningDate;
 
   UserModel({
@@ -23,6 +24,7 @@ class UserModel {
     this.role,
     this.totalProjects = 0,
     this.completedProjects = 0,
+    this.compProjDate,
     this.joiningDate,
   });
 
@@ -37,6 +39,7 @@ class UserModel {
       'Role': role,
       'Total Projects': totalProjects,
       'Completed Projects': completedProjects,
+      'ComPro Date': compProjDate,
       'Joining Date': joiningDate,
     };
     //!= null ? DateFormat('d MMM yyyy').format(joiningDate!) : null
@@ -61,6 +64,7 @@ class UserModel {
       role: snap['Role'],
       totalProjects: snap['Total Projects'],
       completedProjects: snap['Completed Projects'],
+      compProjDate: snap['ComPro Date'],
       joiningDate: snap['Joining Date'] as Timestamp?,
     );
   }
