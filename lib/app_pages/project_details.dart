@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,10 +7,9 @@ import '../widgets/round_button.dart';
 
 class ProjectDetails extends StatefulWidget {
   final Map<String, dynamic> projectData;
-  final Function(bool) updateIsChecked;
+  final Function(bool) updateIsCompleted;
   const ProjectDetails({super.key,
-    required this.projectData,
-    required this.updateIsChecked,
+    required this.projectData, required this.updateIsCompleted,
   });
 
   @override
@@ -20,12 +20,13 @@ class _ProjectDetailsState extends State<ProjectDetails> {
 
   int currentId = 1001;
   DateTime? createdAt;
-  bool isChecked = false;
+  bool isCompleted = false;
 
   @override
   void initState() {
     super.initState();
     creationDate();
+    isCompleted = widget.projectData['status'] == 'Completed';
   }
 
   @override
@@ -155,7 +156,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
               Padding(
                 padding: EdgeInsets.only(left: sizes.width20, top: sizes.height10),
                 child: Text(
-                  'Status:   ${isChecked == true ? 'Completed' : 'In Progress'}',
+                  'Status:   ${widget.projectData['status'] ?? (isCompleted ? 'Completed' : 'In Progress')}',
                   style: const TextStyle(color: Colors.black),
                 ),
               ),
@@ -196,51 +197,14 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     ),
                   ),
                   Checkbox(
-                      value: isChecked,
+                      value: isCompleted,
                       activeColor: Colors.black,
-                      onChanged: isChecked ? null
-                          : (newValue){
-                        setState(() {
-                          isChecked = newValue!;
-                        });
-                        if (isChecked) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  actions: [
-                                    TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: const Color(0xff07aeaf)
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            isChecked = false;
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Cancel', style: TextStyle(color: Colors.black),)
-                                    ),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: const Color(0xff07aeaf)
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          isChecked = true;
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('Yes', style: TextStyle(color: Colors.black,)),
-                                    ),
-                                  ],
-                                  title: const Text('Project Completed?'),
-                                  contentPadding: EdgeInsets.symmetric(vertical: sizes.width20, horizontal: sizes.height20),
-                                  content: const Text('Have you completed the project?'),
-                                );
-                              },
-                          );
-                          widget.updateIsChecked(isChecked);
+                      onChanged: (bool? value){
+                        if (value != null) {
+                          setState(() {
+                            isCompleted = value;
+                          });
+                          updateProjectStatus(widget.projectData['Project Id'], value);
                         }
                       }
                   ),
@@ -292,7 +256,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
     );
   }
 
-      //Created At, becomes to the date when project is created.
+  //Created At, becomes to the date when project is created.
   void creationDate() {
       if (createdAt == null) {
         var createdAtMillies = DateTime.now().millisecondsSinceEpoch;
@@ -300,27 +264,45 @@ class _ProjectDetailsState extends State<ProjectDetails> {
       }
   }
 
-  void boxChecked() {
-    final sizes = Sizes(context);
+  Future<void> updateProjectStatus(String projectId, bool isCompleted) async {
+    try {
+      // Update project status
+      await FirebaseFirestore.instance.collection('Projects').doc(projectId).update({
+        'status': isCompleted ? 'Completed' : 'In Progress',
+        'completedDate': isCompleted ? Timestamp.now() : null,
+      });
 
-    if (isChecked == true) {
-      AlertDialog(
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: Text('Yes'),
-          ),
-          TextButton(
-              onPressed: () {},
-              child: Text('Cancel')
-          ),
-        ],
-        title: Text('Project Completed?'),
-        contentPadding: EdgeInsets.symmetric(vertical: sizes.height20, horizontal: sizes.width20),
-        content: Text('Have you completed the project?'),
-      );
+      // Query the Employee collection to get the document for the given employee's name
+      QuerySnapshot employeeQuerySnapshot = await FirebaseFirestore.instance
+          .collection('Employee')
+          .where('Full Name', isEqualTo: widget.projectData['Full Name'])
+          .get();
+
+      if (employeeQuerySnapshot.docs.isNotEmpty) {
+        // Get the UID of the employee from the first document in the query result
+        String employeeUid = employeeQuerySnapshot.docs.first.id;
+
+        // Get the employee's current completed projects count
+        DocumentSnapshot employeeDoc = await FirebaseFirestore.instance.collection('Employee').doc(employeeUid).get();
+        int completedProjects = employeeDoc['Completed Projects'] ?? 0;
+        int totalProjects = employeeDoc['Total Projects'] ?? 0;
+
+        // Update the employee's completed projects count
+        await FirebaseFirestore.instance.collection('Employee').doc(employeeUid).update({
+          'Completed Projects': isCompleted ? completedProjects + 1 : completedProjects - 1,
+          'Total Projects': isCompleted ? totalProjects - 1 : totalProjects + 1, // Decrease the total projects count
+        });
+      } else {
+        print('Employee document does not exist.');
+      }
+
+      // Notify parent widget about the change
+      if (mounted) {
+        widget.updateIsCompleted(isCompleted);
+      }
+    } catch (e) {
+      print('Error updating project status: $e');
     }
   }
-
 
 }

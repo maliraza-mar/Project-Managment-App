@@ -51,8 +51,8 @@ class _ProjectsState extends State<Projects> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(title: const Text(
-            'Projects', style: TextStyle(color: Colors.black,
-                fontWeight: FontWeight.bold),),
+          'Projects', style: TextStyle(color: Colors.black,
+            fontWeight: FontWeight.bold),),
           centerTitle: true,
           backgroundColor: Colors.grey.shade100,
           automaticallyImplyLeading: false,
@@ -76,7 +76,7 @@ class _ProjectsState extends State<Projects> {
                         Colors.black),),),
                       Tab(
                         child: Text('Completed', style: TextStyle(color:
-                          Colors.black),),),]),
+                        Colors.black),),),]),
               ),
               SizedBox(
                 height: sizes.height510,
@@ -127,109 +127,109 @@ class _ProjectsState extends State<Projects> {
                       }),
                   // Project Completed Section
                   ListView.builder(
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: sizes.height220,
-                              //height approx. = 220.6
-                              width: sizes.width320,
-                              //height approx. = 320
-                              margin: EdgeInsets.only(
-                                top: sizes.height20, //top = 20
-                                left: sizes.width20, //left = 20
-                                right: sizes.width20, //left = 20
-                                bottom: sizes.height20, //top = 20
-                              ),
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey.shade200,
-                                      blurRadius: 10),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(sizes
-                                    .responsiveBorderRadius20), //borderRadius = 20
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: sizes.height5, //top = 5
-                                      left: sizes.width20, //left = 20
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              sizes.responsiveBorderRadius30),
-                                          //borderRadius = 30
-                                          child: Image.network(
-                                            'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=600',
-                                            width: sizes.width100,
-                                            //width approx. = 100
-                                            height: sizes
-                                                .height100, //height approx. = 100
-                                          ),
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: sizes.height220,
+                                  //height approx. = 220.6
+                                  width: sizes.width320,
+                                  //height approx. = 320
+                                  margin: EdgeInsets.only(
+                                    top: sizes.height20, //top = 20
+                                    left: sizes.width20, //left = 20
+                                    right: sizes.width20, //left = 20
+                                    bottom: sizes.height20, //top = 20
+                                  ),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey.shade200,
+                                          blurRadius: 10),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(sizes
+                                        .responsiveBorderRadius20), //borderRadius = 20
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: sizes.height5, //top = 5
+                                          left: sizes.width20, //left = 20
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            bottom: sizes.height15,
-                                            //top = 15
-                                            left: sizes.width20, //left = 20
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              const Text('New House'),
-                                              SizedBox(
-                                                height:
-                                                    sizes.height5, //height = 5
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                  sizes.responsiveBorderRadius30),
+                                              //borderRadius = 30
+                                              child: Image.network(
+                                                'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=600',
+                                                width: sizes.width100,
+                                                //width approx. = 100
+                                                height: sizes
+                                                    .height100, //height approx. = 100
                                               ),
-                                              const Text(
-                                                'ID:  1001',
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 5,
-                                      left: 20,
-                                    ),
-                                    child: Text('Status :  Completed'),
-                                  ),
-                                  Obx(
-                                    () => Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        _twoButton(
-                                          context,
-                                          index: 0,
-                                          button: 0,
-                                          label: 'Details',
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: sizes.height15,
+                                                //top = 15
+                                                left: sizes.width20, //left = 20
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  const Text('New House'),
+                                                  SizedBox(
+                                                    height:
+                                                    sizes.height5, //height = 5
+                                                  ),
+                                                  const Text(
+                                                    'ID:  1001',
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        _twoButton(
-                                          context,
-                                          button: 1,
-                                          index: 1,
-                                          label: 'Message',
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ));
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 5,
+                                          left: 20,
+                                        ),
+                                        child: Text('Status :  Completed'),
+                                      ),
+                                      Obx(
+                                            () => Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                          children: [
+                                            _twoButton(
+                                              context,
+                                              index: 0,
+                                              button: 0,
+                                              label: 'Details',
+                                            ),
+                                            _twoButton(
+                                              context,
+                                              button: 1,
+                                              index: 1,
+                                              label: 'Message',
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ));
                       }),
                 ]),
               )

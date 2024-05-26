@@ -37,6 +37,7 @@ class AddNewProjectState extends State<AddNewProject> {
   // Fetch employee names
   List employeesNamesList = [];
   String? valueChoose;
+  String status = 'In Progress';
 
   // Pick image
   Uint8List? _image;
@@ -281,6 +282,7 @@ class AddNewProjectState extends State<AddNewProject> {
       employeeFullName: selectedEmployee,
       attachment: attachment,
       imageUrl: photoUrl,
+      status: status,
       assignedManProId: projectAssignedId,
     );
 
@@ -316,7 +318,7 @@ class AddNewProjectState extends State<AddNewProject> {
   Future<bool> checkProjectIdExists(String projectId) async {
     try {
       CollectionReference projectCollection =
-          FirebaseFirestore.instance.collection('NewProject');
+          FirebaseFirestore.instance.collection('Projects');
       final snapShot = await projectCollection.where('Project Id', isEqualTo: projectId).get();
       return snapShot.docs.isNotEmpty;
     } catch (e) {
@@ -329,7 +331,7 @@ class AddNewProjectState extends State<AddNewProject> {
   Future<String?> getLastAddedProjectId() async {
     try {
       CollectionReference projectCollection =
-          FirebaseFirestore.instance.collection('NewProject');
+          FirebaseFirestore.instance.collection('Projects');
       final snapShot = await projectCollection
           .orderBy('Project Id', descending: true)
           .limit(1)
@@ -354,18 +356,19 @@ class StoreNewProjectFireStore {
     required String employeeFullName,
     required String attachment,
     required String imageUrl,
+    required String status,
     required String assignedManProId,
   }) async {
     try {
       CollectionReference projectCollection =
-      FirebaseFirestore.instance.collection('NewProject');
+      FirebaseFirestore.instance.collection('Projects');
 
       // Generate a unique document ID for each project
-      String documentId = projectCollection.doc().id;
+      //String documentId = projectCollection.doc().id;
 
       // Store project data using the generated document ID
-      await projectCollection.doc(documentId).set({
-        'DocumentId': documentId, // Store the generated document ID
+      await projectCollection.doc(projectId).set({
+        //'DocumentId': documentId, // Store the generated document ID
         'Project Title': title,
         'Project Id': projectId,
         'Budget': budget,
@@ -374,7 +377,7 @@ class StoreNewProjectFireStore {
         'Attachment': attachment,
         'imageUrl': imageUrl,
         'timestamp': FieldValue.serverTimestamp(),
-        //For Giving Order to projects step by step when added.
+        'status': status,
         'AssignedProId': assignedManProId,
       });
     } catch (e) {
@@ -388,7 +391,7 @@ class StoreNewProjectFireStore {
   Future<List<Map<String, dynamic>>> getAllDetails() async {
     List<Map<String, dynamic>> projects = [];
     try {
-      CollectionReference projectCollection = FirebaseFirestore.instance.collection('NewProject');
+      CollectionReference projectCollection = FirebaseFirestore.instance.collection('Projects');
       final snapShot = await projectCollection.orderBy('timestamp', descending: false).get();
 
       for (var doc in snapShot.docs) {

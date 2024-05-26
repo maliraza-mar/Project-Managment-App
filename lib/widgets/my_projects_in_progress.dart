@@ -21,6 +21,7 @@ class MyProjectsInProgress extends StatefulWidget {
     required this.projectId,
     required this.projectData,
     required this.usersData,
+    //required this.onStatusChanged,
   });
 
   final String title;
@@ -28,6 +29,7 @@ class MyProjectsInProgress extends StatefulWidget {
   final String imageUrl;
   final String employeeName;
   final String projectId;
+  //final Function(bool) onStatusChanged;
 
   @override
   State<MyProjectsInProgress> createState() => _MyProjectsInProgressState();
@@ -36,6 +38,23 @@ class MyProjectsInProgress extends StatefulWidget {
 class _MyProjectsInProgressState extends State<MyProjectsInProgress> {
   final ProjectsController controller = Get.put(ProjectsController());
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  bool isProjectCompleted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isProjectCompleted = widget.projectData['status'] == 'Completed';
+  }
+
+  // Function to update project status
+  void updateIsCompleted(bool isCompleted) {
+    if (mounted) {
+      setState(() {
+        isProjectCompleted = isCompleted;
+      });
+    }
+  }
 
   // for generating unique id for two different users
   String generateRoomId(String user1, String user2, String projectId,) {
@@ -144,7 +163,7 @@ class _MyProjectsInProgressState extends State<MyProjectsInProgress> {
         }
         final currentUserId = _auth.currentUser?.email;
         String user2 = widget.usersData['Uid'] ?? '';
-        //final secondUserId = currentUserId != otherUserId;
+
         String roomId = generateRoomId(currentUserId!, user2, projectId);
 
         Navigator.push(
@@ -153,7 +172,7 @@ class _MyProjectsInProgressState extends State<MyProjectsInProgress> {
                 builder: (context) => button == 0
                     ? ProjectDetails(
                         projectData: widget.projectData,
-                        updateIsChecked: (bool) {},
+                        updateIsCompleted: updateIsCompleted,
                       )
                     : ChatScreen(
                         receiverUserEmail: roomId, receiverUserId: user2,

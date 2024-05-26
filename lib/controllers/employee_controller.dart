@@ -9,6 +9,7 @@ class EmployeeController extends GetxController {
   final users = <UserModel>[].obs;
   final adminUsers = <UserModel>[].obs;
   UserModel? loggedInEmployee;
+  RxList<Map<String, dynamic>> projectProgress = <Map<String, dynamic>>[].obs;
 
   RxInt totalProjectsCount = 0.obs;
   RxInt completedProjectsCount = 0.obs;
@@ -19,6 +20,7 @@ class EmployeeController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     fetchEmployees();
+    fetchTotalProjectsCount();
   }
 
   void fetchEmployees() async {
@@ -115,6 +117,28 @@ class EmployeeController extends GetxController {
       }
     } catch (e) {
       throw Exception('Error updating designation: $e');
+    }
+  }
+
+  Future<void> fetchProjectProgress() async {
+    try {
+      CollectionReference<Map<String, dynamic>> projectCollection = FirebaseFirestore.instance.collection('Employee');
+      QuerySnapshot<Map<String, dynamic>> snapshot = await projectCollection.get();
+
+      List<Map<String, dynamic>> progressData = [];
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
+        if (doc.data().containsKey('date') && doc.data().containsKey('completedProjects')) {
+          progressData.add({
+            'date': (doc['date'] as Timestamp).toDate(),
+            'completedProjects': (doc['completedProjects'] ?? 0) as int,
+          });
+        }
+      }
+
+      projectProgress.assignAll(progressData);
+    } catch (e) {
+      projectProgress.assignAll([]);
     }
   }
 }

@@ -111,7 +111,7 @@ class _AdminState extends State<Admin> {
           //Progress card
           MyCard(
             title: 'Progress', onTap: () {
-              Get.to( () => Progress());
+              Get.to( () => ProgressScreen());
             },
             leading: const Icon(Icons.event_note_outlined),
           ),

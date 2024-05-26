@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:project_app/controllers/projects_controller.dart';
 
 import '../common/sizes.dart';
 import '../controllers/employee_controller.dart';
@@ -26,6 +27,7 @@ class EmployeeDetails extends StatefulWidget {
 class _EmployeeDetailsState extends State<EmployeeDetails> {
   final EmployeeController employeeController = Get.put(EmployeeController());
   final EmployeeTotalProjects employeeTotalProjects = Get.put(EmployeeTotalProjects());
+  final ProjectsController projectsController = Get.put(ProjectsController());
 
   List allNewImagesAdded = [];
   List<String> arrEarnings = [
@@ -311,7 +313,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
   Future<Map<String, int>> fetchEmployeeProjectsCount(String employeeName) async {
     try {
       CollectionReference projectCollection =
-          FirebaseFirestore.instance.collection('NewProject');
+          FirebaseFirestore.instance.collection('Projects');
       final snapShot = await projectCollection
           .where('Full Name', isEqualTo: employeeName)
           .get();
@@ -329,7 +331,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
   Future<QuerySnapshot<Object?>> fetchEmployeeProjects(String employeeName) async {
     try {
       CollectionReference projectCollection =
-          FirebaseFirestore.instance.collection('NewProject');
+          FirebaseFirestore.instance.collection('Projects');
       final snapshot = await projectCollection
           .where('Full Name', isEqualTo: employeeName)
           .get();
